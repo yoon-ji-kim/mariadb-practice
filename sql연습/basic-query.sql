@@ -8,7 +8,7 @@ select VERSION(), CURRENT_date(), now() from dual;
 select sin(pi() /4); select 1+2+3+4 from dual;
 show databases;
 
-use test;
+use webdb;
 show tables;
 
 drop table pet;
@@ -32,6 +32,23 @@ drop table pet;
 show tables;
 -- insert :DML(C)
 insert into pet 
-values('별이','김윤지','dog','f','2019-12-01', null);
+	values('별이','김윤지','dog','f','2019-12-01', null);
+-- select : DML (R)
 select * from pet; 
--- 주석
+-- update : DML (U)
+update pet 
+	set name = '벼리'
+	where name = '별이';
+-- delete : DML(D)
+delete from pet 
+	where name = '벼리';
+-- load data
+load data local infile 'd:\pet.txt' into table pet;
+
+-- 대소문자 구분 X, 내용 기반
+-- select 
+select * from pet
+    where name ='bowser';
+    
+select name, species from pet
+	where name = 'bowser';
