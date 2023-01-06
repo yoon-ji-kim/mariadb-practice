@@ -33,4 +33,4 @@ show tables;
 -- insert :DML(C)
 insert into pet 
 values('별이','김윤지','dog','f','2019-12-01', null);
-select * from pet;
+select * from pet; --
