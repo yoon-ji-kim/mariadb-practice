@@ -32,12 +32,12 @@ select count(*)
 from departments;
 
 -- 문제 6. 현재 부서 매니저는 몇 명이나 있나요?(역임 매너저는 제외)
-select count(*)
+select count(distinct(emp_no))
 from dept_manager
-where to_date= '9999-01-01';
+where to_date = '9999-01-01';
 
 -- 문제 7. 전체 부서를 출력하려고 합니다. 순서는 부서이름이 긴 순서대로 출력해 보세요.
-select dept_name
+select distinct(dept_name)
 from departments
 order by length(dept_name) desc;
 
@@ -49,7 +49,7 @@ where to_date = '9999-01-01' and salary >= 120000;
 
 -- 문제 9. 어떤 직책들이 있나요? 중복 없이 이름이 긴 순서대로 출력해 보세요.
 -- order by length
-select distinct(title) 
+select distinct(title)
 from titles
 order by length(title) desc;
 
