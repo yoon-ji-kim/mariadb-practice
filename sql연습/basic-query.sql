@@ -39,6 +39,11 @@ select * from pet;
 update pet 
 	set name = '벼리'
 	where name = '별이';
+    
+update pet
+	set death = null
+    where name = 'Bowser';
+    
 -- delete : DML(D)
 delete from pet 
 	where name = '벼리';
@@ -52,3 +57,65 @@ select * from pet
     
 select name, species from pet
 	where name = 'bowser';
+    
+select name, species
+ from pet
+ where birth >= '1998-01-01';
+ 
+-- 논리식도 가능 
+select name , species, gender
+	from pet
+    where species = 'dog'
+    and gender = 'f';
+    
+select name , species
+	from pet
+    where species = 'snake'
+    or species = 'bird';
+    
+-- 정렬 order by
+-- 마지막에 실행되고, default는 asc
+select name , birth
+	from pet
+    order by birth desc;
+    
+-- null (빈 값, 알 수 없는 값)
+-- 비교 연산자 사용 불가, IS NULL 또는 IS NOT NULL 연산자 사용
+select name, birth, death
+	from pet
+    where death IS NOT NULL;
+-- LIKE 패턴 매칭
+-- 포함된 문자 조회 _ :한문자, %:여러문자열
+select name
+	from pet
+    where name like 'b%';
+    
+select name
+	from pet
+    where name like '%fy';
+select name
+	from pet
+    where name like '%w%';
+    
+select name
+	from pet
+    where name like '_____';
+
+select name
+	from pet
+    where name like 'b____';
+
+-- count 
+-- null이 아닌 결과의 수
+select count(*)
+	from pet;
+    
+select count(death)
+	from pet;
+-- --->
+select count(*)
+	from pet
+    where death is not null;
+    
+-- grant 계정/권한 관리 
+select * from departments;
