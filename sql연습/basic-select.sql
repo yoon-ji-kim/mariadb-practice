@@ -69,7 +69,6 @@ select concat(first_name,' ',last_name) as name, gender, hire_date
 	from employees
 	order by hire_date asc;
 
-
 -- 예제 2: 예제 : salaries 테이블에서 2001년 월급을 가장 높은순으로 사번, 월급순으로 출력
 select emp_no, salary
 	from salaries
@@ -81,7 +80,7 @@ select emp_no, salary
 select first_name as '이름', gender as '성별', hire_date as '입사일'
 	from employees
 	where gender = 'm'
-	order by 입사일 asc;
+	order by 입사일 asc;  
 
 -- 예제 4: 직원들의 사번, 월급을 조회할 때 사번은 오름차순, 월급은 내림차순으로 출력
 select emp_no, salary, from_date, to_date
