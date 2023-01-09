@@ -24,7 +24,7 @@ where to_date = '9999-01-01';
 
 -- 문제5. 현재 이 회사의 최고/최저 연봉은 얼마입니까?
 -- 9999 min, max
-select min(salary), max(salary)
+select max(salary) as '최고 연봉', min(salary) as '최저 연봉' 
 from salaries
 where to_date = '9999-01-01';
 
