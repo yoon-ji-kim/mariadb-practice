@@ -20,6 +20,9 @@ group by gender;
 select count(case when gender = 'f' then 1 end) as '여직원', count(case when gender = 'm' then 1 end) as '남직원'
 from employees;
 
+select if(gender = 'f', '여직원','남직원') as '성별', count(*) as '직원수'
+from employees
+group by gender;
 -- 문제 4. 현재 근무하고 있는 직원 수 는 몇 명입니까?
 	-- salaries 테이블을 사용합니다.
     -- 현재(to_date= '9999-01-01')
