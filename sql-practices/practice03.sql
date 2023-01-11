@@ -88,3 +88,8 @@ where a.to_date = '9999-01-01'
 	and b.to_date = '9999-01-01'
 group by 직책
 order by 평균연봉 desc;
+
+show processlist;
+
+kill 26;
+kill 27;
