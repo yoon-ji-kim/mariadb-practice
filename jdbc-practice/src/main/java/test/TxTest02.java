@@ -64,6 +64,8 @@ public class TxTest02 {
 			//exception 시 명시적으로 rollback 해주기 **
 			conn.rollback();
 			e.printStackTrace();
+		}finally {
+			conn.setAutoCommit(true);
 		}
 	}
 }
