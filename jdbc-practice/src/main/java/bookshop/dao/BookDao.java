@@ -1,4 +1,4 @@
-package emaillist.dao;
+package bookshop.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,34 +8,84 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import emaillist.vo.EmaillistVo;
+import bookshop.vo.BookVo;
 
-public class EmaillistDao {
+public class BookDao {
 
-	public List<EmaillistVo> findAll() {
-		List<EmaillistVo> result = new ArrayList<>();
-	
+	public void insert(BookVo vo) {
 		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			String sql = "insert into book(no, title, author_no) values(null, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setLong(2, vo.getAuthorNo());
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void update(BookVo vo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			String sql = "update book"
+					+ " set rent = 'Y'"
+					+ " where no = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, vo.getNo());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	public BookVo findByNo(Long no) {
+		BookVo result = new BookVo();
+		Connection conn =null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
 		try {
 			conn = getConnection();
-			
-			String sql ="select no, first_name, last_name, email from emaillist order by no desc";
+			String sql = "select no, rent"
+					+ " from book"
+					+ " where no = ?";
 			pstmt = conn.prepareStatement(sql);
-
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				EmaillistVo vo = new EmaillistVo();
-				vo.setNo(rs.getLong(1));
-				vo.setFirstName(rs.getString(2));
-				vo.setLastName(rs.getString(3));
-				vo.setEmail(rs.getString(4));
-				
-				result.add(vo);
-			}
+			pstmt.setLong(1, no);
 			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result.setNo(rs.getLong(1));
+				result.setRent(rs.getString(2));
+			}
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
@@ -43,11 +93,9 @@ public class EmaillistDao {
 				if(rs != null) {
 					rs.close();
 				}
-				
 				if(pstmt != null) {
 					pstmt.close();
 				}
-				
 				if(conn != null) {
 					conn.close();
 				}
@@ -55,34 +103,39 @@ public class EmaillistDao {
 				e.printStackTrace();
 			}
 		}
-		
 		return result;
 	}
-
-	public void insert(EmaillistVo vo) {
-		Connection conn = null;
+	public List<BookVo> findAll() {
+		List<BookVo> list = new ArrayList<>();
+		Connection conn =null;
 		PreparedStatement pstmt = null;
-		
+		ResultSet rs = null;
 		try {
 			conn = getConnection();
-			
-			String sql = "insert into emaillist values(null, ?, ?, ?)";
+			String sql = "select a.no, a.title, a.rent, b.name"
+					+ " from book a"
+					+ " join author b"
+					+ " on a.author_no = b.no";
 			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, vo.getFirstName());
-			pstmt.setString(2, vo.getLastName());
-			pstmt.setString(3, vo.getEmail());
-			
-			pstmt.executeUpdate();
-			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BookVo vo = new BookVo();
+				vo.setNo(rs.getLong(1));
+				vo.setTitle(rs.getString(2));
+				vo.setRent(rs.getString(3));
+				vo.setAuthorName(rs.getString(4));
+				list.add(vo);
+			}
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
 			try {
+				if(rs != null) {
+					rs.close();
+				}
 				if(pstmt != null) {
 					pstmt.close();
 				}
-				
 				if(conn != null) {
 					conn.close();
 				}
@@ -90,41 +143,11 @@ public class EmaillistDao {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public void deleteByEmail(String email) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = getConnection();
-			
-			String sql = "delete from emaillist where email = ?";
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, email);
-			
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				
-				if(conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		return list;
 	}
 	
 	private Connection getConnection() throws SQLException {
 		Connection conn = null;
-		
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 			String url = "jdbc:mariadb://192.168.10.123:3307/webdb?charset=utf8";
@@ -132,7 +155,6 @@ public class EmaillistDao {
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패:" + e);
 		}
-		
 		return conn;
 	}
 }

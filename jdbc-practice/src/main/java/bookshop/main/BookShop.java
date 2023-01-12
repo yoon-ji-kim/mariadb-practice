@@ -3,6 +3,9 @@ package bookshop.main;
 import java.util.List;
 import java.util.Scanner;
 
+import bookshop.dao.BookDao;
+import bookshop.vo.BookVo;
+
 public class BookShop {
 
 	public static void main(String[] args) {
@@ -13,16 +16,22 @@ public class BookShop {
 		Long no = scanner.nextLong();
 		scanner.close();
 		
-		BookVo vo = new BookVo();
-		vo.setNo(no);
-		vo.setRent("Y");
-		new BookDao().update(vo);
+		BookDao dao = new BookDao();
+		BookVo vo = dao.findByNo(no);
+		String rentStatus = vo.getRent();
+		if("Y".equals(rentStatus)) {
+			System.out.println("이미 대여중 ..");
+			return;
+		}
+		dao.update(vo);
 		
 		displayBookInfo();
 	}
 
 	private static void displayBookInfo() {
 		List<BookVo> list = new BookDao().findAll();
+		for(BookVo vo : list) {
+			System.out.println(vo);
+		}
 	}
-
 }
