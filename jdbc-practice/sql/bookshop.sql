@@ -10,7 +10,7 @@ order by no;
 insert into author values(null, "김윤지");
 delete from author
 where name ='김윤지';
-insert into book(no, title, author_no) values(null, "트와일라잇", 1);
+insert into book(no, title, author_no) values(null, "트와일라잇", rent,author_no);
 select * from book;
 
 select a.no, a.title, a.rent, b.name
