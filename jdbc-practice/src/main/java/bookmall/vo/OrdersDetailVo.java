@@ -55,7 +55,7 @@ public class OrdersDetailVo {
 	}
 	@Override
 	public String toString() {
-		return "OrdersDetailVo [no=" + no + ", count=" + count + ", bookNo=" + bookNo + ", ordersNo=" + ordersNo
-				+ ", title=" + title + ", price=" + price + ", categoryNo=" + categoryNo + "]";
+		return "OrdersDetailVo [bookNo=" + bookNo + ", title=" + title 
+				+ ", price=" + price + ", categoryNo=" + categoryNo + "]";
 	}
 }

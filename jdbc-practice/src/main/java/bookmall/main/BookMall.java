@@ -18,30 +18,29 @@ import bookmall.vo.UserVo;
 
 public class BookMall {
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
 //		회원 정보 넣기
-//		insertUser();
+		insertUser();
 //		회원정보 출력
 		printUser();
 //		구입할 회원번호 입력 받기
-		System.out.print("회원 번호 입력 >> ");
-		int userNo = sc.nextInt();
+		System.out.println("회원 번호 입력 >> 1");
+		int userNo = 1;
+		UserVo userVo = new UserDao().findByUserNo(userNo);
 		System.out.println("로그인 완료");
 //		카테고리, 책 정보 넣기 & 카테고리 출력
-//		insertCategory();
-//		insertBook();
-		UserVo userVo = new UserDao().findByUserNo(userNo);
+		insertCategory();
+		insertBook();
 		printCategoryList();
-		System.out.print("카테고리 선택 >> ");
-		int categoryNum = sc.nextInt();
+		System.out.println("카테고리 선택 >> 1");
+		int categoryNum = 1;
 //		상품 리스트
 		System.out.println("##카테고리내 상품리스트");
 		List<BookVo> list = new BookDao().findByCategoryNo(categoryNum);
 		for(BookVo vo : list) {
 			System.out.println(vo);
 		}
-		System.out.print("카트에 추가할 책번호 입력 >> ");
-		int bookNo= sc.nextInt();
+		System.out.println("카트에 추가할 책번호 입력 >> 1");
+		int bookNo= 1;
 //		카트에 물건 추가
 		BookVo bookVo = new BookDao().findByNo(bookNo);
 		if(bookVo.getStock() <= 0) {
@@ -70,9 +69,9 @@ public class BookMall {
 			System.out.println(cart);
 		}
 		System.out.println("##주문");
-		System.out.print("주문하시겠습니까?[y/n] : ");
+		System.out.println("주문하시겠습니까?[y/n] : y");
 //		*주문번호로 바꾸기
-		String answer = sc.next();
+		String answer = "y";
 		if(!"y".equals(answer)) {
 			//카트에서 상품지우기
 			System.out.println("프로그램 종료");
@@ -83,7 +82,7 @@ public class BookMall {
 		ordersVo = new OrdersVo();
 		//**장바구니 가격 합계 구하기
 		Long price = searchPrice(userVo.getNo());
-		ordersVo.setPrice(33000L);
+		ordersVo.setPrice(price);
 		ordersVo.setDestination(userVo.getAddress());
 		ordersVo.setStatus("Y");
 		ordersVo.setUserNo(userVo.getNo());
@@ -91,15 +90,11 @@ public class BookMall {
 	    // orders_detail에 주문 추가
 		OrdersDetailVo ordersdetailVo = null;
 		OrdersDetailDao ordersdetailDao = new OrdersDetailDao();
-		//**user_no로 cart에서 book_no 찾기
-		//**리스트로 결과 값 받아서 detail에 넣기
 		ordersdetailVo = new OrdersDetailVo();
-		//**count, bookNo, ordersNo 구하기
 		ordersdetailVo.setCount(1);
 		ordersdetailVo.setBookNo(1L);
 		ordersdetailVo.setOrdersNo(1L);
 		ordersdetailDao.insert(ordersdetailVo);
-		//**cart 상태 바꾸기
 		//주문내역
 		System.out.println("##주문 도서 리스트");
 		//orders_detail 내역 불러오기
@@ -110,8 +105,8 @@ public class BookMall {
 	}
 
 
-	private static long searchPrice(Long long1) {
-		Long price = new CartDao().findTotalPricebyUserNo(long1);
+	private static long searchPrice(Long userNo) {
+		Long price = new CartDao().findTotalPricebyUserNo(userNo);
 		return price;
 	}
 

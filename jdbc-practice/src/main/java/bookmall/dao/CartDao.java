@@ -89,7 +89,7 @@ public class CartDao {
 		}
 		return result;
 	}
-	public long findTotalPricebyUserNo(int userNo) {
+	public long findTotalPricebyUserNo(Long userNo) {
 		long totalPrice =0;
 		Connection conn = null;
 		PreparedStatement pstmt =null;
@@ -102,7 +102,7 @@ public class CartDao {
 					+ "	and b.user_no = ?"
 					+ " and status = 'N'";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, userNo);
+			pstmt.setLong(1, userNo);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				totalPrice = rs.getLong(1);
