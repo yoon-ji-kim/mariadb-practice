@@ -11,12 +11,6 @@ public class CartDaoTest {
 		//카트에 넣기
 //		testInsert();
 //		testFindbyUserNo();
-		testFindTotalPricebyUserNo();
-	}
-
-	private static void testFindTotalPricebyUserNo() {
-		Long price = new CartDao().findTotalPricebyUserNo(1);
-		System.out.println(price);
 	}
 
 	private static void testFindbyUserNo() {
